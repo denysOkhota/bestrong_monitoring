@@ -18,7 +18,7 @@ data:
         - static_configs:
           - targets:
             # Alertmanager's default port is 9093
-            - 10.224.0.46:9093
+            - "http://alertmanager.monitoring.svc:9093"
     
     scrape_configs:
       - job_name: 'kubernetes-apiservers'

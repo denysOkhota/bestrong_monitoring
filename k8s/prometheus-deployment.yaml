@@ -27,6 +27,9 @@ spec:
               mountPath: /etc/prometheus/
             - name: prometheus-storage-volume
               mountPath: /prometheus/
+            - name: prometheus-rules-volume
+              mountPath: /etc/prometheus/rules
+              
       volumes:
         - name: prometheus-config-volume
           configMap:
@@ -34,6 +37,10 @@ spec:
             name: prometheus-server-conf
         - name: prometheus-storage-volume
           emptyDir: {}
+        - name: prometheus-rules-config
+          configMap:
+            defaultMode: 420
+            name: prometheus-rules-conf
 ---
 apiVersion: v1
 kind: Service

@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-conf
+  labels:
+    name: alertmanager-conf
+  namespace: monitoring
+data:
+  alertmanager.yml: |
+    global:
+      smtp_smarthost: 'smtp.gmail.com:587'
+      smtp_from: 'denbestrong@gmail.com'
+      smtp_require_tls: true
+      smtp_auth_username: 'denbestrong@gmail.com'
+      smtp_auth_password: 'yfnucnidnaboxttk'
+
+    route:
+      group_by: 
+      receiver: 'email_receiver'
+
+    receivers:
+    - name: 'email_receiver'
+      email_configs:
+      - to: 'debbestrong@gmail.com'
+        from: 'denbestrong@gmail.com'
+        smarthost: 'smtp.gmail.com:587'
+        auth_username: 'denbestrong@gmail.com'
+        auth_identity: 'denbestrong@gmail.com'
+        auth_password: 'yfnucnidnaboxttk'
+        require_tls: true

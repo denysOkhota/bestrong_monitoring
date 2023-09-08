@@ -6,16 +6,16 @@ metadata:
 data:
   node_rules.yml: |
     groups:
-    - name: node_cpu
+    - name: container_cpu
       rules:
       - record: container_cpu_usage_percent
         expr: 100 - (avg by (instance, container) (irate(container_cpu_usage_seconds_total{container="web-api"}[5m])) * 100)
-    
-    - name: node_memory
+
+    - name: container_memory
       rules:
       - record: container_memory_usage_percent
         expr: (container_memory_usage_bytes{container="web-api"} / container_spec_memory_limit_bytes{container="web-api"}) * 100
-    
+
     - name: alert_rules
       rules:
         - alert: HighCPULoad

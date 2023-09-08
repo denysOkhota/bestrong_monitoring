@@ -11,7 +11,7 @@ data:
       scrape_interval: 5s
       evaluation_interval: 5s
     rule_files:
-    - rules/node_rules.yml  
+    - /etc/prometheus/rules/node_rules.yml  
 
     scrape_configs:
       - job_name: 'kubernetes-apiservers'

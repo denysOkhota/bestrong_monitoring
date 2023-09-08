@@ -20,10 +20,14 @@ spec:
         image: "165343/webapi"
         resources:
           requests:
-            cpu: 100m
-            memory: 100Mi
+            cpu: "100m"
+            memory: "100Mi"
+          limits:
+            cpu: "200m"
+            memory: "200Mi"
         ports:
         - containerPort: 80
+
 
 ---
 

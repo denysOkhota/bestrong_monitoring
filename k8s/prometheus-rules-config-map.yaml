@@ -14,12 +14,12 @@ data:
     - name: node_memory
       rules:
       - record: node_memory_MemFree_percent
-        expr: 100 - (100 * node_memory_MemFree_bytes / node_memory_MemTotal_bytes)
+        expr: container_memory_usage_bytes{container="web-api"} / container_memory_limit_bytes{container="web-api"} * 100
     
     - name: alert_rules
       rules:
         - alert: HighCPULoad
-          expr: node_cpu_usage_percent > 70
+          expr: 100 - (avg by (instance) (irate(container_cpu_usage_seconds_total{container="web-api"}[5m])) * 100) > 70
           labels:
             severity: warning
           annotations:
@@ -27,6 +27,6 @@ data:
             summary: 'High CPU Load'
 
         - alert: RAMMemoryFree30Percent
-          expr: node_memory_MemFree_percent <= 30
+          expr: container_memory_usage_bytes{container="web-api"} / container_memory_limit_bytes{container="web-api"} * 100 > 70
           labels:
             severity: warning

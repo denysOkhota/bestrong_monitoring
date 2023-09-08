@@ -14,9 +14,9 @@ spec:
       - name: prometheus-alertmanager
         image: prom/alertmanager:v0.14.0
         args:
-          - --config.file=/etc/config/alertmanager.yml
-          - --storage.path=/data
-          - --web.external-url=/
+          - "--config.file=/etc/config/alertmanager.yml"
+          - "--storage.path=/data"
+          - "--web.external-url=/"
         ports:
           - containerPort: 9093
         volumeMounts:
@@ -31,6 +31,7 @@ spec:
           name: config-volume
         - emptyDir: {}
           name: storage-volume
+
 ---
 apiVersion: v1
 kind: Service

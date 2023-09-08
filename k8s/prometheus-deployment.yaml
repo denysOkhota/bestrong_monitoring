@@ -27,7 +27,7 @@ spec:
               mountPath: /etc/prometheus/
             - name: prometheus-storage-volume
               mountPath: /prometheus/
-            - name: prometheus-rules-volume
+            - name: prometheus-rules-config
               mountPath: /etc/prometheus/rules
               
       volumes:

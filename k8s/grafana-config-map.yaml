@@ -4,7 +4,7 @@ metadata:
   name: grafana-config
   namespace: monitoring
 data:
-  custom.ini: |
+  grafana.ini: |
     [server]
     root_url = %(protocol)s://%(domain)s:%(http_port)s/
     [auth.anonymous]

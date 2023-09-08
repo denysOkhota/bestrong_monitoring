@@ -22,7 +22,7 @@ stages:
         inputs:
           command: 'init'
           backendType: 'azurerm'
-          backendServiceArm: 'Azure subscription 1(f4210fd4-9a8e-484e-b3ab-bf706abb3785)'
+          backendServiceArm: 'Azure subscription 1(1)(f4210fd4-9a8e-484e-b3ab-bf706abb3785)'
           backendAzureRmSubscriptionId: 'f4210fd4-9a8e-484e-b3ab-bf706abb3785'
           backendAzureRmResourceGroupName: 'tfstate'
           backendAzureRmStorageAccountName: 'dentfstate'
@@ -39,7 +39,7 @@ stages:
         inputs:
           provider: 'azurerm'
           command: 'apply'
-          environmentServiceNameAzureRM: 'Azure subscription 1 (f4210fd4-9a8e-484e-b3ab-bf706abb3785)'
+          environmentServiceNameAzureRM: 'Azure subscription 1(1)(f4210fd4-9a8e-484e-b3ab-bf706abb3785)'
           workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
       - task: Kubernetes@1
         inputs:

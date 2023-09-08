@@ -1,30 +1,9 @@
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: nfs-pv-grafana
-  namespace: monitoring
-spec:
-  capacity:
-    storage: 1Gi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: nfs
-  mountOptions:
-    - hard
-    - nfsvers=4.1
-  nfs:
-    path: /mnt/storage-k8s/nfs/grafana
-    server: 10.11.1.20
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-pvc-grafana
-  namespace: monitoring
+  name: grafana-pvc
 spec:
-  storageClassName: nfs
   accessModes:
     - ReadWriteOnce
   resources:
@@ -34,51 +13,63 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: grafana
-  namespace: monitoring
   labels:
     app: grafana
+  name: grafana
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: grafana
   template:
     metadata:
-      name: grafana
       labels:
         app: grafana
     spec:
       securityContext:
         fsGroup: 472
-        runAsGroup: 472
-        runAsNonRoot: true
-        runAsUser: 472
+        supplementalGroups:
+          - 0
       containers:
-      - name: grafana
-        image: grafana/grafana:7.3.7
-        imagePullPolicy: IfNotPresent
-        ports:
         - name: grafana
-          containerPort: 3000
-        resources:
-          limits:
-            memory: "2Gi"
-            cpu: "1000m"
-          requests: 
-            memory: "1Gi"
-            cpu: "500m"
-        volumeMounts:
-          - name: grafana-config
-            mountPath: /etc/grafana/grafana.ini
-            subPath: grafana.ini
+          image: grafana/grafana:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+              name: http-grafana
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /robots.txt
+              port: 3000
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 2
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 3000
+            timeoutSeconds: 1
+          resources:
+            requests:
+              cpu: 250m
+              memory: 750Mi
+          volumeMounts:
+            - mountPath: /var/lib/grafana
+              name: grafana-pv
+            - name: grafana-config
+              mountPath: /etc/grafana/grafana.ini
+              subPath: grafana.ini
 
-          - name: grafana-storage
-            mountPath: /var/lib/grafana
-
-          - name: grafana-datasources
-            mountPath: /etc/grafana/provisioning/datasources/prometheus.yaml
-            subPath: prometheus.yaml
+            - name: grafana-datasources
+              mountPath: /etc/grafana/provisioning/datasources/prometheus.yaml
+              subPath: prometheus.yaml
+            
 
       restartPolicy: Always
       terminationGracePeriodSeconds: 60
@@ -87,14 +78,13 @@ spec:
           configMap:
             name: grafana-ini
 
-        - name: grafana-storage
-          persistentVolumeClaim:
-            claimName: nfs-pvc-grafana
-
         - name: grafana-datasources
           configMap:
             name: grafana-datasources
 
+        - name: grafana-pv
+          persistentVolumeClaim:
+            claimName: grafana-pvc
 ---
 apiVersion: v1
 kind: Service

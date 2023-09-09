@@ -75,7 +75,7 @@ stages:
         displayName: Bake K8s manifests from Helm chart
         inputs:
           action: 'bake'
-          helmChart: 'fluent/fluent-bit'
+          helmChart: 'fluent-bit'
       - task: KubernetesManifest@1
         inputs:
           action: 'deploy'

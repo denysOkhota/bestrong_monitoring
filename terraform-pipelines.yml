@@ -67,9 +67,9 @@ stages:
           arguments: '-f k8s/'
           secretType: 'dockerRegistry'
           containerRegistryType: 'Azure Container Registry'
-      - task: ManualValidation@0
+      - task: ManualIntervention@8
         inputs:
-          notifyUsers: 'qwerty165343@gmail.com'
+          emailRecipients: 'qwerty165343@gmail.com'
       - task: Kubernetes@1
         inputs:
           connectionType: 'Azure Resource Manager'

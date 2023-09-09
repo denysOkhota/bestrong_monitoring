@@ -10,9 +10,9 @@ data:
     global:
       smtp_smarthost: 'smtp.gmail.com:587'
       smtp_from: 'denbestrong@gmail.com'
-      smtp_require_tls: true
+      smtp_require_tls: false
       smtp_auth_username: 'denbestrong@gmail.com'
-      smtp_auth_password: 'yfnucnidnaboxttk'
+      smtp_auth_password: 'ei8Ui1ABeeJa'
 
     route:
       group_by: 
@@ -21,10 +21,10 @@ data:
     receivers:
     - name: 'email_receiver'
       email_configs:
-      - to: 'debbestrong@gmail.com'
+      - to: 'qwerty165343@gmail.com'
         from: 'denbestrong@gmail.com'
         smarthost: 'smtp.gmail.com:587'
         auth_username: 'denbestrong@gmail.com'
         auth_identity: 'denbestrong@gmail.com'
         auth_password: 'yfnucnidnaboxttk'
-        require_tls: true
+        require_tls: false

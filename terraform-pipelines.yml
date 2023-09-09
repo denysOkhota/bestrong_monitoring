@@ -69,16 +69,21 @@ stages:
           containerRegistryType: 'Azure Container Registry'
       - script: |
           helm repo add fluent https://fluent.github.io/helm-charts
-      - task: HelmDeploy@0
+          helm pull fluent/fluent-bit --untar
+      - task: KubernetesManifest@1
+        name: bake
+        displayName: Bake K8s manifests from Helm chart
         inputs:
-          connectionType: 'Azure Resource Manager'
-          azureSubscription: 'Azure subscription 1(1)(f4210fd4-9a8e-484e-b3ab-bf706abb3785)'
+          action: 'bake'
+          helmChart: 'fluent/fluent-bit'
+      - task: KubernetesManifest@1
+        inputs:
+          action: 'deploy'
+          connectionType: 'azureResourceManager'
+          azureSubscriptionConnection: 'Azure subscription 1(1)(f4210fd4-9a8e-484e-b3ab-bf706abb3785)'
           azureResourceGroup: 'bestrongrg'
           kubernetesCluster: 'aks-cluster'
-          command: 'upgrade'
-          chartType: 'Name'
-          chartName: 'fluent/fluent-bit'
-          publishPipelineMetadata: false
+          manifests: '$(bake.manifestsBundle)'
 
     - job: waitForValidation
       displayName: Wait for external validation of Destroy

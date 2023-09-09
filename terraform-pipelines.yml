@@ -84,6 +84,7 @@ stages:
           azureResourceGroup: 'bestrongrg'
           kubernetesCluster: 'aks-cluster'
           manifests: '$(bake.manifestsBundle)'
+          namespace: kube-system
 
     - job: waitForValidation
       dependsOn: TerraformInitAndValidate

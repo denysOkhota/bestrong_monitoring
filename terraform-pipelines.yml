@@ -67,9 +67,22 @@ stages:
           arguments: '-f k8s/'
           secretType: 'dockerRegistry'
           containerRegistryType: 'Azure Container Registry'
-      - task: ManualIntervention@8
+    - job: waitForValidation
+      displayName: Wait for external validation of Destroy
+      pool: server
+      timeoutInMinutes: 4320
+      steps:
+      - task: ManualValidation@0
+        timeoutInMinutes: 1440 
         inputs:
-          emailRecipients: 'qwerty165343@gmail.com'
+          notifyUsers: |
+            qwerty165343@gmail.com
+          instructions: 'Please validate the build configuration and resume'
+          onTimeout: reject
+    - job: DeleteK8S
+      dependsOn: waitForValidation
+      displayName: Delete K8S cluster
+      steps:
       - task: Kubernetes@1
         inputs:
           connectionType: 'Azure Resource Manager'

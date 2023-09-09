@@ -86,6 +86,7 @@ stages:
           manifests: '$(bake.manifestsBundle)'
 
     - job: waitForValidation
+      dependsOn: TerraformInitAndValidate
       displayName: Wait for external validation of Destroy
       pool: server
       timeoutInMinutes: 4320

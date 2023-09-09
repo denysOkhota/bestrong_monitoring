@@ -67,6 +67,19 @@ stages:
           arguments: '-f k8s/'
           secretType: 'dockerRegistry'
           containerRegistryType: 'Azure Container Registry'
+      - script: |
+          helm repo add fluent https://fluent.github.io/helm-charts
+      - task: HelmDeploy@0
+        inputs:
+          connectionType: 'Azure Resource Manager'
+          azureSubscription: 'Azure subscription 1(1)(f4210fd4-9a8e-484e-b3ab-bf706abb3785)'
+          azureResourceGroup: 'bestrongrg'
+          kubernetesCluster: 'aks-cluster'
+          command: 'upgrade'
+          chartType: 'Name'
+          chartName: 'fluent/fluent-bit'
+          publishPipelineMetadata: false
+
     - job: waitForValidation
       displayName: Wait for external validation of Destroy
       pool: server

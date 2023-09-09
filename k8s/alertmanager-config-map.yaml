@@ -12,7 +12,7 @@ data:
       smtp_from: 'denbestrong@gmail.com'
       smtp_require_tls: false
       smtp_auth_username: 'denbestrong@gmail.com'
-      smtp_auth_password: 'ei8Ui1ABeeJa'
+      smtp_auth_password: 'yfnucnidnaboxttk'
 
     route:
       group_by: 
@@ -26,5 +26,5 @@ data:
         smarthost: 'smtp.gmail.com:587'
         auth_username: 'denbestrong@gmail.com'
         auth_identity: 'denbestrong@gmail.com'
-        auth_password: 'yfnucnidnaboxttk'
+        auth_password: 'ei8Ui1ABeeJa'
         require_tls: false

@@ -67,24 +67,6 @@ stages:
           arguments: '-f k8s/'
           secretType: 'dockerRegistry'
           containerRegistryType: 'Azure Container Registry'
-      - script: |
-          helm repo add fluent https://fluent.github.io/helm-charts
-          helm pull fluent/fluent-bit --untar
-      - task: KubernetesManifest@1
-        name: bake
-        displayName: Bake K8s manifests from Helm chart
-        inputs:
-          action: 'bake'
-          helmChart: 'fluent-bit'
-      - task: KubernetesManifest@1
-        inputs:
-          action: 'deploy'
-          connectionType: 'azureResourceManager'
-          azureSubscriptionConnection: 'Azure subscription 1(1)(f4210fd4-9a8e-484e-b3ab-bf706abb3785)'
-          azureResourceGroup: 'bestrongrg'
-          kubernetesCluster: 'aks-cluster'
-          manifests: '$(bake.manifestsBundle)'
-          namespace: kube-system
 
     - job: waitForValidation
       dependsOn: TerraformInitAndValidate

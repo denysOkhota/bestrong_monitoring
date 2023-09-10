@@ -10,7 +10,6 @@ spec:
   selector:
     matchLabels:
       app: loki
-      group: grafana
   template:
     metadata:
       labels:

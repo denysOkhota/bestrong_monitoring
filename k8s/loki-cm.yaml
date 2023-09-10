@@ -20,7 +20,6 @@ data:
 
     schema_config:
       configs:
-      - from: 0
         store: boltdb
         object_store: filesystem
         schema: v9

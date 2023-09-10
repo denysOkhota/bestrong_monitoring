@@ -5,6 +5,7 @@ metadata:
   namespace: monitoring
 data:
   loki-config.yaml: |-
+
     auth_enabled: false
 
     server:
@@ -19,7 +20,8 @@ data:
 
     schema_config:
       configs:
-      - store: boltdb
+      - from: 2023-08-10
+        store: boltdb
         object_store: filesystem
         schema: v9
         index:

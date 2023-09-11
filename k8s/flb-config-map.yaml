@@ -88,6 +88,6 @@ data:
     [OUTPUT]
         Name          loki/http
         Match         *
-        Url           http://loki-service.monitorng.svc:3100/loki/api/v1/push
+        Url           http://loki.monitorng.svc:3100/loki/api/v1/push
         Http_Method   POST
         Json_Date_Key ts

@@ -70,7 +70,7 @@ stages:
       - task: AzureCLI@2
         inputs:
           azureSubscription: 'Azure subscription 1(1)(f4210fd4-9a8e-484e-b3ab-bf706abb3785)'
-          scriptType: 'batch'
+          scriptType: 'bash'
           scriptLocation: 'inlineScript'
           inlineScript: 'az aks get-credentials --resource-group bestrongrg --name aks-cluster'
       - script: |

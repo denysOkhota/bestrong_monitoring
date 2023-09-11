@@ -29,8 +29,8 @@ spec:
               memory: "128Mi"
               cpu: "500m"
           volumeMounts:
-          - name: loki-config
-            mountPath: /etc/loki/
+            - name: loki-config
+              mountPath: /etc/loki/
       volumes:
         - name: loki-config
           configMap:

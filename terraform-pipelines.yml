@@ -67,6 +67,10 @@ stages:
           arguments: '-f k8s/'
           secretType: 'dockerRegistry'
           containerRegistryType: 'Azure Container Registry'
+      - script: |
+          helm repo add grafana https://grafana.github.io/helm-charts
+          helm repo update
+          helm install --values values.yaml loki --namespace=monitoring grafana/loki
 
     - job: waitForValidation
       dependsOn: TerraformInitAndValidate

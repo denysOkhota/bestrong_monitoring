@@ -16,7 +16,7 @@ data:
 
     schema_config:
       configs:
-      - from: 0
+      - from: 2023
         store: boltdb
         object_store: filesystem
         schema: v9

@@ -22,6 +22,7 @@ data:
                 "editable":true,
                 "name":"Loki",
                 "type":"loki",
+                "orgId": 1,
                 "url": "http://loki.monitoring.svc:3100"
             }
         ]

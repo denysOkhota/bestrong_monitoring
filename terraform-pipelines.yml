@@ -70,7 +70,7 @@ stages:
       - script: |
           helm repo add grafana https://grafana.github.io/helm-charts
           helm repo update
-          az account set --subscription f4210fd4-9a8e-484e-b3ab-bf706abb3785
+          az account set --subscription 'Azure subscription 1(f4210fd4-9a8e-484e-b3ab-bf706abb3785)'
           az aks get-credentials --resource-group bestrongrg --name aks-cluster
           ls
       - script: |

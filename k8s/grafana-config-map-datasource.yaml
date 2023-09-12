@@ -24,6 +24,9 @@ data:
                 "orgId": 1,
                 "type":"loki",
                 "url": "http://loki.monitoring.svc.cluster.local:3100",
+                "jsonData": {
+                    "X-Scope-OrgID": "1"
+                }
             }
         ]
     }

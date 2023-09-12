@@ -91,4 +91,3 @@ data:
         Url           http://loki.monitoring.svc:3100/loki/api/v1/push
         Http_Method   POST
         Json_Date_Key ts
-        Header        X-Scope-OrgID "1"

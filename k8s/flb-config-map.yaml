@@ -86,7 +86,7 @@ data:
         Set file /var/log/cron
   output-loki.conf: |
     [OUTPUT]
-        Name          loki/http
+        Name          loki
         Match         *
         Url           http://loki.monitoring.svc:3100/loki/api/v1/push
         Http_Method   POST

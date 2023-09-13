@@ -17,7 +17,7 @@ data:
       alertmanagers:
         - static_configs:
           - targets:
-            # Alertmanager's default port is 9093
+           
             - alertmanager.monitoring.svc:9093
     
     scrape_configs:

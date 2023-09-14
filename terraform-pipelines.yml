@@ -1,125 +1,102 @@
-
 trigger:
   branches:
     include:
-    - main
-
-
+      - main
 
 stages:
   - stage: BuildAndDeployDEV
-    displayName: 'Build and Deploy DEV'
+    displayName: "Build and Deploy DEV"
     condition: contains(variables['Build.SourceBranch'],'refs/heads/main')
     jobs:
-    - job: TerraformInitAndValidate
-      displayName: 'Terraform Install, Init, and Validate'
-      steps:
-      - task: TerraformCLI@0
-        inputs:
-          command: 'init'
-          backendType: 'azurerm'
-          backendServiceArm: 'Azure subscription 1(1)(f4210fd4-9a8e-484e-b3ab-bf706abb3785)'
-          backendAzureRmSubscriptionId: 'f4210fd4-9a8e-484e-b3ab-bf706abb3785'
-          backendAzureRmResourceGroupName: 'tfstate'
-          backendAzureRmStorageAccountName: 'dentfstate'
-          backendAzureRmContainerName: 'tfstate'
-          backendAzureRmKey: 'terraform.tfstate'
-          workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-        
-      - task: TerraformCLI@0
-        inputs:
-          command: 'validate'
-          workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-          
-      - task: TerraformTaskV4@4
-        inputs:
-          provider: 'azurerm'
-          command: 'apply'
-          environmentServiceNameAzureRM: 'Azure subscription 1(1)(f4210fd4-9a8e-484e-b3ab-bf706abb3785)'
-          workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-      # - task: Kubernetes@1
-      #   inputs:
-      #     connectionType: 'Azure Resource Manager'
-      #     azureSubscriptionEndpoint: 'Azure subscription 1(f4210fd4-9a8e-484e-b3ab-bf706abb3785)'
-      #     azureResourceGroup: 'bestrongrg'
-      #     kubernetesCluster: 'aks-cluster'
-      #     command: 'apply'
-      #     arguments: '-f k8s/namespace.yaml'
-      #     secretType: 'dockerRegistry'
-      #     containerRegistryType: 'Azure Container Registry'
-      # - task: Kubernetes@1
-      #   inputs:
-      #     connectionType: 'Azure Resource Manager'
-      #     azureSubscriptionEndpoint: 'Azure subscription 1(f4210fd4-9a8e-484e-b3ab-bf706abb3785)'
-      #     azureResourceGroup: 'bestrongrg'
-      #     kubernetesCluster: 'aks-cluster'
-      #     command: 'apply'
-      #     arguments: '-f k8s/cluster-role.yaml'
-      #     secretType: 'dockerRegistry'
-      #     containerRegistryType: 'Azure Container Registry'
-      # - task: Kubernetes@1
-      #   inputs:
-      #     connectionType: 'Azure Resource Manager'
-      #     azureSubscriptionEndpoint: 'Azure subscription 1(f4210fd4-9a8e-484e-b3ab-bf706abb3785)'
-      #     azureResourceGroup: 'bestrongrg'
-      #     kubernetesCluster: 'aks-cluster'
-      #     command: 'apply'
-      #     arguments: '-f k8s/'
-      #     secretType: 'dockerRegistry'
-      #     containerRegistryType: 'Azure Container Registry'
-      - task: AzureCLI@2
-        inputs:
-          azureSubscription: 'Azure subscription 1(1)(f4210fd4-9a8e-484e-b3ab-bf706abb3785)'
-          scriptType: 'bash'
-          scriptLocation: 'inlineScript'
-          inlineScript: 'az aks get-credentials --resource-group bestrongrg --name aks-cluster'
-      - script: |
-          helm repo add grafana https://grafana.github.io/helm-charts
-          helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-          helm repo add grafana https://grafana.github.io/helm-charts
-          helm repo update        
-      - script: |
-          helm upgrade --install --force --values prometheus-values.yaml prometheus prometheus-community/prometheus
-          helm upgrade --install --force --values loki-values.yaml loki grafana/loki
-          helm upgrade --install --force --values grafana-values.yaml grafana grafana/grafana
-          helm upgrade --install --force --values fluent-bit-values.yaml fluent-bit grafana/fluent-bit
+      - job: TerraformInitAndValidate
+        displayName: "Terraform Install, Init, and Validate"
+        steps:
+          - task: TerraformCLI@0
+            inputs:
+              command: "init"
+              backendType: "azurerm"
+              backendServiceArm: "Azure subscription 1(1)(f4210fd4-9a8e-484e-b3ab-bf706abb3785)"
+              backendAzureRmSubscriptionId: "f4210fd4-9a8e-484e-b3ab-bf706abb3785"
+              backendAzureRmResourceGroupName: "tfstate"
+              backendAzureRmStorageAccountName: "dentfstate"
+              backendAzureRmContainerName: "tfstate"
+              backendAzureRmKey: "terraform.tfstate"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
 
+          - task: TerraformCLI@0
+            inputs:
+              command: "validate"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
 
-    - job: waitForValidation
-      dependsOn: TerraformInitAndValidate
-      displayName: Wait for external validation of Destroy
-      pool: server
-      timeoutInMinutes: 4320
-      steps:
-      - task: ManualValidation@0
-        timeoutInMinutes: 1440 
-        inputs:
-          notifyUsers: |
-            qwerty165343@gmail.com
-          instructions: 'Please validate the build configuration and resume'
-          onTimeout: reject
-    - job: DeleteK8S
-      dependsOn: waitForValidation
-      displayName: Delete K8S cluster
-      steps:
-      # - task: Kubernetes@1
-      #   inputs:
-      #     connectionType: 'Azure Resource Manager'
-      #     azureSubscriptionEndpoint: 'Azure subscription 1(1)(f4210fd4-9a8e-484e-b3ab-bf706abb3785)'
-      #     azureResourceGroup: 'bestrongrg'
-      #     kubernetesCluster: 'aks-cluster'
-      #     command: 'delete'
-      #     arguments: '-f k8s/'
-      #     secretType: 'dockerRegistry'
-      #     containerRegistryType: 'Azure Container Registry'
-      - task: AzureCLI@2
-        inputs:
-          azureSubscription: 'Azure subscription 1(1)(f4210fd4-9a8e-484e-b3ab-bf706abb3785)'
-          scriptType: 'bash'
-          scriptLocation: 'inlineScript'
-          inlineScript: 'az aks get-credentials --resource-group bestrongrg --name aks-cluster'
-      - script: |
-          helm uninstall prometheus
-          helm uninstall loki
-          helm uninstall grafana
-          helm uninstall fluent-bit
+          - task: TerraformTaskV4@4
+            inputs:
+              provider: "azurerm"
+              command: "apply"
+              environmentServiceNameAzureRM: "Azure subscription 1(1)(f4210fd4-9a8e-484e-b3ab-bf706abb3785)"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform"
+          - task: Kubernetes@1
+            inputs:
+              connectionType: "Azure Resource Manager"
+              azureSubscriptionEndpoint: "Azure subscription 1(f4210fd4-9a8e-484e-b3ab-bf706abb3785)"
+              azureResourceGroup: "bestrongrg"
+              kubernetesCluster: "aks-cluster"
+              command: "apply"
+              arguments: "-f k8s/"
+              secretType: "dockerRegistry"
+              containerRegistryType: "Azure Container Registry"
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: "Azure subscription 1(1)(f4210fd4-9a8e-484e-b3ab-bf706abb3785)"
+              scriptType: "bash"
+              scriptLocation: "inlineScript"
+              inlineScript: "az aks get-credentials --resource-group bestrongrg --name aks-cluster"
+          - script: |
+              helm repo add grafana https://grafana.github.io/helm-charts
+              helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+              helm repo add grafana https://grafana.github.io/helm-charts
+              helm repo update
+          - script: |
+              helm upgrade --install --force --values prometheus-values.yaml prometheus prometheus-community/prometheus
+              helm upgrade --install --force --values loki-values.yaml loki grafana/loki
+              helm upgrade --install --force --values grafana-values.yaml grafana grafana/grafana
+              helm upgrade --install --force --values fluent-bit-values.yaml fluent-bit grafana/fluent-bit
+
+      - job: waitForValidation
+        dependsOn: TerraformInitAndValidate
+        displayName: Wait for external validation of Destroy
+        pool: server
+        timeoutInMinutes: 4320
+        steps:
+          - task: ManualValidation@0
+            timeoutInMinutes: 1440
+            inputs:
+              notifyUsers: |
+                qwerty165343@gmail.com
+              instructions: "Please validate the build configuration and resume"
+              onTimeout: reject
+      - job: DeleteK8S
+        dependsOn: waitForValidation
+        displayName: Delete K8S cluster
+        steps:
+          - task: Kubernetes@1
+            inputs:
+              connectionType: "Azure Resource Manager"
+              azureSubscriptionEndpoint: "Azure subscription 1(1)(f4210fd4-9a8e-484e-b3ab-bf706abb3785)"
+              azureResourceGroup: "bestrongrg"
+              kubernetesCluster: "aks-cluster"
+              command: "delete"
+              arguments: "-f k8s/"
+              secretType: "dockerRegistry"
+              containerRegistryType: "Azure Container Registry"
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: "Azure subscription 1(1)(f4210fd4-9a8e-484e-b3ab-bf706abb3785)"
+              scriptType: "bash"
+              scriptLocation: "inlineScript"
+              inlineScript: "az aks get-credentials --resource-group bestrongrg --name aks-cluster"
+          - script: |
+              helm uninstall prometheus
+              helm uninstall loki
+              helm uninstall grafana
+              helm uninstall fluent-bit
+>>>>>>> eceb72c (update to architecture)

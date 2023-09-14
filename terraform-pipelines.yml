@@ -110,6 +110,5 @@ stages:
       #     secretType: 'dockerRegistry'
       #     containerRegistryType: 'Azure Container Registry'
       - script: |
-        - script: |
           helm uninstall prometheus
           helm uninstall loki

@@ -37,6 +37,16 @@ stages:
           command: 'apply'
           environmentServiceNameAzureRM: 'Azure subscription 1(1)(f4210fd4-9a8e-484e-b3ab-bf706abb3785)'
           workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+      - task: Kubernetes@1
+        inputs:
+          connectionType: 'Azure Resource Manager'
+          azureSubscriptionEndpoint: 'Azure subscription 1(1)(f4210fd4-9a8e-484e-b3ab-bf706abb3785)'
+          azureResourceGroup: 'bestrongrg'
+          kubernetesCluster: 'aks-cluster'
+          command: 'apply'
+          arguments: '-f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.7.0/deploy/static/provider/cloud/deploy.yaml'
+          secretType: 'dockerRegistry'
+          containerRegistryType: 'Azure Container Registry'
       # - task: Kubernetes@1
       #   inputs:
       #     connectionType: 'Azure Resource Manager'

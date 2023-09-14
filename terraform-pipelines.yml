@@ -99,4 +99,3 @@ stages:
               helm uninstall loki
               helm uninstall grafana
               helm uninstall fluent-bit
->>>>>>> eceb72c (update to architecture)

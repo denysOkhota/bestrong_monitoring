@@ -77,12 +77,13 @@ stages:
           helm repo add grafana https://grafana.github.io/helm-charts
           helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
           helm repo add grafana https://grafana.github.io/helm-charts
+          helm repo add fluent https://fluent.github.io/helm-charts
           helm repo update        
       - script: |
           helm upgrade --install --values prometheus-values.yaml prometheus prometheus-community/prometheus
           helm upgrade --install --values loki-values.yaml loki grafana/loki
           helm upgrade --install --values grafana-values.yaml grafana grafana/grafana
-          helm upgrade --install --values fluent-bit-values.yaml fluent-bit grafana/fluent-bit
+          helm upgrade --install --values fluent-bit-values.yaml fluent-bit fluent/fluent-bit
 
 
     - job: waitForValidation

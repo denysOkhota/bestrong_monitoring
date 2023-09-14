@@ -77,13 +77,12 @@ stages:
           helm repo add grafana https://grafana.github.io/helm-charts
           helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
           helm repo add grafana https://grafana.github.io/helm-charts
-          helm repo add fluent https://fluent.github.io/helm-charts
           helm repo update        
       - script: |
-          helm upgrade --install --values prometheus-values.yaml prometheus prometheus-community/prometheus
-          helm upgrade --install --values loki-values.yaml loki grafana/loki
-          helm upgrade --install --values grafana-values.yaml grafana grafana/grafana
-          helm upgrade --install --values fluent-bit-values.yaml fluent-bit fluent/fluent-bit
+          helm upgrade --install --force --values prometheus-values.yaml prometheus prometheus-community/prometheus
+          helm upgrade --install --force --values loki-values.yaml loki grafana/loki
+          helm upgrade --install --force --values grafana-values.yaml grafana grafana/grafana
+          helm upgrade --install --force --values fluent-bit-values.yaml fluent-bit grafana/fluent-bit
 
 
     - job: waitForValidation
@@ -113,12 +112,6 @@ stages:
       #     arguments: '-f k8s/'
       #     secretType: 'dockerRegistry'
       #     containerRegistryType: 'Azure Container Registry'
-      - task: AzureCLI@2
-        inputs:
-          azureSubscription: 'Azure subscription 1(1)(f4210fd4-9a8e-484e-b3ab-bf706abb3785)'
-          scriptType: 'bash'
-          scriptLocation: 'inlineScript'
-          inlineScript: 'az aks get-credentials --resource-group bestrongrg --name aks-cluster'
       - script: |
           helm uninstall prometheus
           helm uninstall loki

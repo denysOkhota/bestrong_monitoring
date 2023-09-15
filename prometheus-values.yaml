@@ -329,7 +329,7 @@ server:
     ## Must be provided if Ingress is enabled
     ##
     hosts:
-    - "*"
+    - prometheus.okhden.pp.ua
     #   - domain.com/prometheus
 
     path: /

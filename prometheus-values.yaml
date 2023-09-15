@@ -338,11 +338,11 @@ server:
     pathType: Prefix
 
     ## Extra paths to prepend to every host configuration. This is useful when working with annotation based services.
-    extraPaths:
-    - path: /
-      backend:
-        serviceName: ssl-redirect
-        servicePort: use-annotation
+    # extraPaths:
+    # - path: /
+    #   backend:
+    #     serviceName: ssl-redirect
+    #     servicePort: use-annotation
 
     ## Prometheus server Ingress TLS configuration
     ## Secrets must be manually created in the namespace

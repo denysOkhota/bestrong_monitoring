@@ -53,13 +53,14 @@ stages:
           - script: |
               helm repo add grafana https://grafana.github.io/helm-charts
               helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-              helm repo add grafana https://grafana.github.io/helm-charts
+              helm repo add fluent https://fluent.github.io/helm-charts
+
               helm repo update
           - script: |
               helm upgrade --install --force --values prometheus-values.yaml prometheus prometheus-community/prometheus
               helm upgrade --install --force --values loki-values.yaml loki grafana/loki
               helm upgrade --install --force --values grafana-values.yaml grafana grafana/grafana
-              helm upgrade --install --force --values fluent-bit-values.yaml fluent-bit grafana/fluent-bit
+              helm upgrade --install --force --values fluent-bit-values.yaml fluent-bit fluent/fluent-bit
 
       - job: waitForValidation
         dependsOn: TerraformInitAndValidate

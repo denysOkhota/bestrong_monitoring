@@ -557,11 +557,11 @@ datasources:
      url: http://prometheus-server.default.svc:80
      access: proxy
      isDefault: true
-   - name: Loki
-     type: loki
-     url: http://loki.default.svc:3100
-     access: proxy
-     isDefault: true
+  #  - name: Loki
+  #    type: loki
+  #    url: http://loki.default.svc:3100
+  #    access: proxy
+  #    isDefault: true
 
 
   
@@ -672,17 +672,17 @@ dashboardProviders:
 ##
 ## dashboards per provider, use provider name as key.
 ##
-dashboards:
-  default:
-    some-dashboard:
-      json: |
-        $RAW_JSON
-    custom-dashboard:
-      file: dashboards/custom-dashboard.json
-    prometheus-stats:
-      gnetId: 1860
-      revision: 32
-      datasource: Prometheus
+# dashboards:
+#   default:
+#     some-dashboard:
+#       json: |
+#         $RAW_JSON
+#     custom-dashboard:
+#       file: dashboards/custom-dashboard.json
+#     prometheus-stats:
+#       gnetId: 1860
+#       revision: 32
+#       datasource: Prometheus
     # local-dashboard:
     #   url: https://grafana.com/grafana/dashboards/1860-node-exporter-full/1860_rev32.json
     #   token: ''

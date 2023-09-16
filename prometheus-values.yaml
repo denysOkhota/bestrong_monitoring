@@ -687,7 +687,7 @@ serverFiles:
   ## Alerts configuration
   ## Ref: https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/
   alerting_rules.yml:
-  groups:
+  alerts:
     - name: Load
       rules:
         - alert: HighCPULoad

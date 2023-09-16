@@ -393,8 +393,9 @@ config:
     [OUTPUT]
         Name loki
         Match *
-        Url http://loki.default.svc:3100
+        Url http://loki-gateway.default.svc
         Retry_Limit False
+        auto_kubernetes_labels on
 
 
   ## https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/classic-mode/upstream-servers

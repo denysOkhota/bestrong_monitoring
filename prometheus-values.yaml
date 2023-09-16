@@ -688,22 +688,22 @@ serverFiles:
   ## Ref: https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/
   alerting_rules.yml:
     groups:
-    - name: Load
-      rules:
-        - alert: HighCPULoad
-          expr: 100 - (avg by (instance, container) (irate(container_cpu_usage_seconds_total{container="web-api"}[5m])) * 100) > 70
-          labels:
-            severity: warning
-          annotations:
-            description: 'High CPU load detected on {{ $labels.instance }}'
-            summary: 'High CPU Load'
+      - name: Load
+        rules:
+          - alert: HighCPULoad
+            expr: 100 - (avg by (instance, container) (irate(container_cpu_usage_seconds_total{container="web-api"}[5m])) * 100) > 70
+            labels:
+              severity: warning
+            annotations:
+              description: 'High CPU load detected on {{ $labels.instance }}'
+              summary: 'High CPU Load'
 
-        - alert: RAMMemoryFree30Percent
-          expr: (container_memory_usage_bytes{container="web-api"} / container_spec_memory_limit_bytes{container="web-api"}) * 100 > 70
-          labels:
-            severity: warning
-          annotations:
-            summary: 'High RAM usage on {{ $labels.instance }} '
+          - alert: RAMMemoryFree30Percent
+            expr: (container_memory_usage_bytes{container="web-api"} / container_spec_memory_limit_bytes{container="web-api"}) * 100 > 70
+            labels:
+              severity: warning
+            annotations:
+              summary: 'High RAM usage on {{ $labels.instance }} '
   # DEPRECATED DEFAULT VALUE, unless explicitly naming your files, please use alerting_rules.yml
   alerts: {}
 

@@ -395,7 +395,7 @@ config:
         Match *
         Url http://loki-gateway.default.svc
         Retry_Limit False
-        auto_kubernetes_labels off
+        auto_kubernetes_labels on
 
 
   ## https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/classic-mode/upstream-servers

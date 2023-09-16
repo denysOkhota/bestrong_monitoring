@@ -687,23 +687,33 @@ serverFiles:
   ## Alerts configuration
   ## Ref: https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/
   alerting_rules.yml:
-    groups:
-      - name: Load
-        alerts:
-          - alert: HighCPULoad
-            expr: 100 - (avg by (instance, container) (irate(container_cpu_usage_seconds_total{container="web-api"}[5m])) * 100) > 70
-            labels:
-              severity: warning
-            annotations:
-              description: 'High CPU load detected on {{ $labels.instance }}'
-              summary: 'High CPU Load'
+  groups:
+    - name: Load
+      rules:
+        - alert: HighCPULoad
+          expr: 100 - (avg by (instance, container) (irate(container_cpu_usage_seconds_total{container="web-api"}[5m])) * 100) > 70
+          labels:
+            severity: warning
+          annotations:
+            description: 'High CPU load detected on {{ $labels.instance }}'
+            summary: 'High CPU Load'
 
-          - alert: RAMMemoryFree30Percent
-            expr: (container_memory_usage_bytes{container="web-api"} / container_spec_memory_limit_bytes{container="web-api"}) * 100 > 70
-            labels:
-              severity: warning
-            annotations:
-              summary: 'High RAM usage on {{ $labels.instance }} '
+        - alert: RAMMemoryFree30Percent
+          expr: (container_memory_usage_bytes{container="web-api"} / container_spec_memory_limit_bytes{container="web-api"}) * 100 > 70
+          labels:
+            severity: warning
+          annotations:
+            summary: 'High RAM usage on {{ $labels.instance }} '
+    - name: Load
+      rules:
+        - alert: HighCPULoad
+          expr: up == 0
+          for: 5m
+          labels:
+            severity: page
+          annotations:
+            description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes.'
+            summary: 'Instance {{ $labels.instance }} down'
   # DEPRECATED DEFAULT VALUE, unless explicitly naming your files, please use alerting_rules.yml
   alerts: {}
 

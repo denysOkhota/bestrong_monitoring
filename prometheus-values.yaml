@@ -689,7 +689,7 @@ serverFiles:
   alerting_rules.yml:
     groups:
       - name: Load
-        rules:
+        alerts:
           - alert: HighCPULoad
             expr: 100 - (avg by (instance, container) (irate(container_cpu_usage_seconds_total{container="web-api"}[5m])) * 100) > 70
             labels:

@@ -711,15 +711,15 @@ serverFiles:
   ## Ref: https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/
   recording_rules.yml:
     groups:
-    - name: container_cpu
-      rules:
-      - record: container_cpu_usage_percent
-        expr: 100 - (avg by (instance, container) (irate(container_cpu_usage_seconds_total{container="web-api"}[5m])) * 100)
+      - name: container_cpu
+        rules:
+          - record: container_cpu_usage_percent
+            expr: 100 - (avg by (instance, container) (irate(container_cpu_usage_seconds_total{container="web-api"}[5m])) * 100)
 
-    - name: container_memory
-      rules:
-      - record: container_memory_usage_percent
-        expr: (container_memory_usage_bytes{container="web-api"} / container_spec_memory_limit_bytes{container="web-api"}) * 100
+      - name: container_memory
+        rules:
+          - record: container_memory_usage_percent
+            expr: (container_memory_usage_bytes{container="web-api"} / container_spec_memory_limit_bytes{container="web-api"}) * 100
         
   ## DEPRECATED DEFAULT VALUE, unless explicitly naming your files, please use recording_rules.yml
   rules: {}

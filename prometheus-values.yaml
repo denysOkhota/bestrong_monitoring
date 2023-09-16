@@ -704,16 +704,6 @@ serverFiles:
             severity: warning
           annotations:
             summary: 'High RAM usage on {{ $labels.instance }} '
-    - name: Load
-      rules:
-        - alert: HighCPULoad
-          expr: up == 0
-          for: 5m
-          labels:
-            severity: page
-          annotations:
-            description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes.'
-            summary: 'Instance {{ $labels.instance }} down'
   # DEPRECATED DEFAULT VALUE, unless explicitly naming your files, please use alerting_rules.yml
   alerts: {}
 

@@ -391,24 +391,21 @@ config:
         Name kubernetes
         Match kube.*
         Merge_Log On
-        Keep_Log Off
+        Keep_Log On
         K8S-Logging.Parser On
         K8S-Logging.Exclude On
+    
 
   ## https://docs.fluentbit.io/manual/pipeline/outputs
   outputs: |
     [OUTPUT]
         Name loki
         Match *
+        Labels job=fluent, namespace=$kubernetes['namespace_name'], pod=$kubernetes['pod_name'], container=$kubernetes['container_name']
         Url http://loki-gateway.default.svc
+        Auto_kubernetes_labels off
         Retry_Limit False
-        auto_kubernetes_labels on
-    
-    [OUTPUT]
-        Name loki
-        Match web-api
-        Url http://loki-gateway.default.svc
-        Retry_Limit False
+        Line_format json
 
   ## https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/classic-mode/upstream-servers
   ## This configuration is deprecated, please use `extraFiles` instead.

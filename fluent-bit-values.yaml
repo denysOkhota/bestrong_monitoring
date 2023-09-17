@@ -394,6 +394,9 @@ config:
         Keep_Log On
         K8S-Logging.Parser On
         K8S-Logging.Exclude On
+        Kube_Tag_Prefix kube.var.log.containers.
+        Kube_Prefix_Namespace On
+
 
   ## https://docs.fluentbit.io/manual/pipeline/outputs
   outputs: |

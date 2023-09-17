@@ -404,7 +404,8 @@ config:
         Name loki
         Match *
         Labels job=fluent, namespace=$kubernetes['namespace_name'], pod=$kubernetes['pod_name'], container=$kubernetes['container_name']
-        Url http://loki-gateway.default.svc
+        Host loki-gateway.default.svc
+        Port 80
         Auto_kubernetes_labels off
         Retry_Limit False
         Line_format json

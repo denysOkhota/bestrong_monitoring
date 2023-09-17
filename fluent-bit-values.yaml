@@ -389,7 +389,7 @@ config:
   filters: |
     [FILTER]
         Name kubernetes
-        Match kube.*
+        Match *
         Merge_Log On
         Keep_Log On
         K8S-Logging.Parser On

@@ -395,14 +395,17 @@ config:
         K8S-Logging.Parser On
         K8S-Logging.Exclude On
         Kube_Tag_Prefix kube.var.log.containers.
-
+    [FILTER]
+        Name record_modifier
+        Match host.kubelet.service
+        Record container_name kubelet
 
   ## https://docs.fluentbit.io/manual/pipeline/outputs
   outputs: |
     [OUTPUT]
         Name loki
         Match *
-        Labels job=fluent, namespace=$kubernetes['namespace_name'], pod=$kubernetes['pod_name'], container=$kubernetes['container_name']
+        Labels namespace=$kubernetes['namespace_name'], pod=$kubernetes['pod_name'], container=$kubernetes['container_name']
         Host loki-gateway.default.svc
         Port 80
         Auto_kubernetes_labels off

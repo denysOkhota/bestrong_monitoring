@@ -559,10 +559,6 @@ datasources:
      isDefault: true
    - name: Loki
      type: loki
-     url: http://loki.default.svc:3100
-     access: proxy
-   - name: Loki
-     type: loki
      orgId: 1
      url: http://loki-gateway.default.svc
      access: proxy

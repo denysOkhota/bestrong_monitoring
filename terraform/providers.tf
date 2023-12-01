@@ -18,11 +18,11 @@ terraform {
 
   backend "azurerm" {
     resource_group_name  = "tfstate"
-    storage_account_name = "dentfstate"
+    storage_account_name = "tfstate"
     container_name       = "tfstate"
     key                  = "terraform.tfstate"
 
-    sas_token = "sp=racwdli&st=2023-09-08T11:54:08Z&se=2023-10-11T19:54:08Z&spr=https&sv=2022-11-02&sr=c&sig=kL3xoapIUwD7QuYFmZ9jDdRPuQqltZJswJpFj%2FXb%2F4Y%3D"
+    sas_token = ""
   }
 
 }
